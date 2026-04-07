@@ -3,7 +3,7 @@ import sys
 from streamlit.web.cli import main
 
 if __name__ == "__main__":
-    # This forces Streamlit to run on the port Vercel provides
+    # Force Streamlit to run on the port Vercel provides
     sys.argv = [
         "streamlit",
         "run",
