@@ -2,17 +2,16 @@ import os
 import sys
 import subprocess
 
-# Simple handler to keep Vercel happy
+# This 'app' object is the "handler" Vercel was looking for
 def app(environ, start_response):
-    start_response('200 OK', [('Content-Type', 'text/html')])
-    return [b"<html><head><meta http-equiv='refresh' content='5'></head><body style='background-color:#FFF0F5; font-family:sans-serif; text-align:center; padding-top:50px;'><h2 style='color:#D87093;'>Waking up the FL Engine...</h2><p>Please wait, loading hardware data.</p></body></html>"]
+    start_response('200 OK', [('Content-Type', 'text/plain')])
+    return [b"Streamlit engine is warming up... Please refresh in 30 seconds."]
 
 if __name__ == "__main__":
-    # Launching dashboard.py with optimizations
+    # This launches your pink dashboard
     subprocess.Popen([
         "streamlit", "run", "dashboard.py",
         "--server.port", os.getenv("PORT", "8080"),
         "--server.address", "0.0.0.0",
-        "--server.headless", "true",
-        "--theme.primaryColor", "#D87093"
+        "--server.headless", "true"
     ])
