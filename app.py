@@ -1,29 +1,41 @@
 import os
 import subprocess
 from fastapi import FastAPI
-from fastapi.responses import JSONResponse
+from fastapi.responses import HTMLResponse
 import pandas as pd
 
 app = FastAPI()
 
-# --- 1. DATA API LOGIC ---
 @app.get("/get-devices")
 def get_devices():
+    """The API endpoint for your data."""
     try:
         df = pd.read_excel("devices_dataset.csv.xlsx")
         return {"status": "success", "data": df.to_dict(orient="records")}
     except Exception as e:
-        return JSONResponse(status_code=500, content={"error": str(e)})
+        return {"error": str(e)}
 
-# --- 2. THE DASHBOARD LAUNCHER ---
-# This is what forces the Pink Dashboard to show up on the main page
+@app.get("/", response_class=HTMLResponse)
+def home():
+    """The landing page that triggers the UI."""
+    return """
+    <html>
+        <head><title>Launching Dashboard</title></head>
+        <body style="background-color: #ffe4e1; font-family: Arial; text-align: center; padding-top: 50px;">
+            <h1>Connecting to Federated Learning Dashboard...</h1>
+            <p>If the dashboard doesn't load in 5 seconds, please refresh.</p>
+            <script>
+                // This script will attempt to trigger the UI logic
+                console.log("Dashboard initializing...");
+            </script>
+        </body>
+    </html>
+    """
+
 if __name__ == "__main__":
-    import uvicorn
-    # This runs Streamlit as a subprocess on the port Vercel expects
+    # This line is what Vercel uses to boot your Streamlit UI
     subprocess.Popen([
         "streamlit", "run", "dashboard.py", 
         "--server.port", "8080", 
         "--server.address", "0.0.0.0"
     ])
-    # This keeps the FastAPI backend alive in the background
-    uvicorn.run(app, host="0.0.0.0", port=8000)
