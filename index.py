@@ -3,8 +3,7 @@ import sys
 from streamlit.web.cli import main
 
 if __name__ == "__main__":
-    # This tells Streamlit to run your visual dashboard 
-    # using the port Vercel provides
+    # This tells Vercel to launch your dashboard.py UI
     sys.argv = [
         "streamlit",
         "run",
