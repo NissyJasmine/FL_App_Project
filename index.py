@@ -8,13 +8,10 @@ def app(environ, start_response):
     return [b"Streamlit engine is warming up... Please refresh in 30 seconds."]
 
 if __name__ == "__main__":
-    # Get the current directory to ensure devices_dataset is found
-    base_path = os.path.dirname(__file__)
-    dashboard_path = os.path.join(base_path, "dashboard.py")
-    
     subprocess.Popen([
-        "streamlit", "run", dashboard_path,
+        "streamlit", "run", "dashboard.py",
         "--server.port", os.getenv("PORT", "8080"),
         "--server.address", "0.0.0.0",
-        "--server.headless", "true"
+        "--server.headless", "true",
+        "--browser.gatherUsageStats", "false"
     ])
