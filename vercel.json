@@ -1,16 +1,15 @@
-import os
-import sys
-import subprocess
-
-# This 'app' object is the "handler" Vercel was looking for
-def app(environ, start_response):
-    start_response('200 OK', [('Content-Type', 'text/plain')])
-    return [b"Streamlit is starting..."]
-
-if __name__ == "__main__":
-    # This launches your pink dashboard
-    subprocess.Popen([
-        "streamlit", "run", "dashboard.py",
-        "--server.port", os.getenv("PORT", "8080"),
-        "--server.address", "0.0.0.0"
-    ])
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "index.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "index.py"
+    }
+  ]
+}
